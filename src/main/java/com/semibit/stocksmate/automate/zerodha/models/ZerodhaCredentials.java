@@ -1,10 +1,9 @@
-package com.semibit.stocksmate.automate.zerodha;
+package com.semibit.stocksmate.automate.zerodha.models;
 
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-@Builder
 @Getter
 @Setter
 public class ZerodhaCredentials {

@@ -2,6 +2,7 @@ package com.semibit.stocksmate.automate.zerodha;
 
 import com.semibit.stocksmate.automate.Logger;
 import com.semibit.stocksmate.automate.services.RestClient;
+import com.semibit.stocksmate.automate.zerodha.models.ZerodhaCredentials;
 import kotlin.Pair;
 import okhttp3.Headers;
 import okhttp3.Response;
@@ -18,11 +19,10 @@ public class LoginHelper {
 
     public ZerodhaCredentials login() throws Exception {
 
-        ZerodhaCredentials zerodhaCredentials =
-                new ZerodhaCredentials.ZerodhaCredentialsBuilder()
-                        .userId(System.getenv("Z_USERID"))
-                        .password(System.getenv("Z_PASSWORD"))
-                        .pin(System.getenv("Z_PIN")).build();
+        ZerodhaCredentials zerodhaCredentials = new ZerodhaCredentials();
+        zerodhaCredentials.setUserId(System.getenv("Z_USERID"));
+        zerodhaCredentials.setPassword(System.getenv("Z_PASSWORD"));
+        zerodhaCredentials.setPin(System.getenv("Z_PIN"));
 
         Response kfSessionResponse = restClient.callGet("https://kite.zerodha.com/", null);
         zerodhaCredentials.setKfSession(getCookie(kfSessionResponse.headers(), "kf_session"));
