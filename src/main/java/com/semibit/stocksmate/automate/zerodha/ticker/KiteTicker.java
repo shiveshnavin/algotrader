@@ -9,7 +9,6 @@ import com.neovisionaries.ws.client.*;
 import com.semibit.stocksmate.automate.zerodha.exceptions.KiteException;
 import com.semibit.stocksmate.automate.zerodha.models.Depth;
 import com.semibit.stocksmate.automate.zerodha.models.Order;
-import com.semibit.stocksmate.automate.zerodha.models.Routes;
 import com.semibit.stocksmate.automate.zerodha.models.Tick;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -70,26 +69,6 @@ public class KiteTicker {
     /** Used to reconnect after the specified delay.*/
     private boolean canReconnect = true;
 
-    /** Initialize Kite Ticker.
-     * @param accessToken is the token received after successful login process.
-     * @param apiKey is the api key of the app which is received after creating an app on developers console.*/
-    public KiteTicker(String accessToken, String apiKey) {
-
-        if (wsuri == null) {
-            createUrl(accessToken, apiKey);
-        }
-
-        try {
-            ws = new WebSocketFactory().createSocket(wsuri);
-        } catch (IOException e) {
-            if(onErrorListener != null) {
-                onErrorListener.onError(e);
-            }
-            return;
-        }
-        ws.addListener(getWebsocketAdapter());
-        modeMap = new HashMap<>();
-    }
     public KiteTicker(String url) {
 
         wsuri = url;
@@ -193,10 +172,6 @@ public class KiteTicker {
         }
     }
 
-    /** Creates url for websocket connection.*/
-    private void createUrl(String accessToken, String apiKey){
-        wsuri = new Routes().getWsuri().replace(":access_token", accessToken).replace(":api_key", apiKey);
-    }
     /** Set listener for listening to ticks.
      * @param onTickerArrivalListener is listener which listens for each tick.*/
     public void setOnTickerArrivalListener(OnTicks onTickerArrivalListener){
