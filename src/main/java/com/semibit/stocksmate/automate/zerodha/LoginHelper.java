@@ -14,15 +14,14 @@ import java.util.Map;
 
 public class LoginHelper {
 
+    RestClient restClient;
 
-    RestClient restClient = new RestClient();
+    public LoginHelper(RestClient restClient) {
+        this.restClient = restClient;
+    }
 
-    public ZerodhaCredentials login() throws Exception {
 
-        ZerodhaCredentials zerodhaCredentials = new ZerodhaCredentials();
-        zerodhaCredentials.setUserId(System.getenv("Z_USERID"));
-        zerodhaCredentials.setPassword(System.getenv("Z_PASSWORD"));
-        zerodhaCredentials.setPin(System.getenv("Z_PIN"));
+    public ZerodhaCredentials login(ZerodhaCredentials zerodhaCredentials) throws Exception {
 
         Response kfSessionResponse = restClient.callGet("https://kite.zerodha.com/", null);
         zerodhaCredentials.setKfSession(getCookie(kfSessionResponse.headers(), "kf_session"));
@@ -51,6 +50,7 @@ public class LoginHelper {
         headers.put("accept", "application/json, text/plain, */*");
         headers.put("x-kite-userid", zerodhaCredentials.getUserId());
         headers.put("x-kite-version", "2.9.10");
+        headers.put("x-csrftoken", zerodhaCredentials.getPublicSession());
         headers.put("cookie", "_ga=GA1.2.494953855.1641359787; " +
                 "_gid=GA1.2.397832564.1641359787;" +
                 " public_token=" + zerodhaCredentials.getPublicSession() + "; kf_session=" + zerodhaCredentials.getKfSession());

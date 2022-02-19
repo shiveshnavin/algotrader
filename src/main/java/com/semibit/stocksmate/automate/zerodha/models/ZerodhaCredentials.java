@@ -1,6 +1,5 @@
 package com.semibit.stocksmate.automate.zerodha.models;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,12 +7,12 @@ import lombok.Setter;
 @Setter
 public class ZerodhaCredentials {
 
-    private String userId;
-    private String password;
-    private String pin;
+    private String userId = "";
+    private String password = "";
+    private String pin = "";
 
-    private String encToken;
-    private String kfSession;
-    private String publicSession;
+    private String encToken = "";
+    private String kfSession = "";
+    private String publicSession = "";
 
 }

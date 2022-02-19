@@ -3,7 +3,9 @@ package com.semibit.stocksmate.automate.zerodha.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import lombok.Getter;
 
+@Getter
 public class ScipRes {
     @SerializedName("instrument_token")
     @Expose

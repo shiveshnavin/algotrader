@@ -1,14 +1,14 @@
 package com.semibit.stocksmate;
 
-import com.semibit.stocksmate.automate.zerodha.*;
+import com.semibit.stocksmate.automate.common.models.Interval;
+import com.semibit.stocksmate.automate.zerodha.ScipFinder;
+import com.semibit.stocksmate.automate.zerodha.ZerodhaAdapter;
 import com.semibit.stocksmate.automate.zerodha.models.ScipRes;
 import com.semibit.stocksmate.automate.zerodha.models.ZerodhaCredentials;
-import com.semibit.stocksmate.automate.zerodha.ticker.KiteTicker;
 
 public class StocksMateApplication {
 
     public static void main(String[] args) {
-        LoginHelper loginHelper = new LoginHelper();
         try {
             ScipRes filter = new ScipRes();
             filter.name = "NIFTY";
@@ -19,9 +19,15 @@ public class StocksMateApplication {
             filter.exchange = "NFO";
 
             ScipRes matching = ScipFinder.findScip(filter);
-            ZerodhaCredentials zerodhaCredentials = loginHelper.login();
+
+            ZerodhaCredentials zerodhaCredentials = new ZerodhaCredentials();
+            zerodhaCredentials.setUserId(System.getenv("Z_USERID"));
+            zerodhaCredentials.setPassword(System.getenv("Z_PASSWORD"));
+            zerodhaCredentials.setPin(System.getenv("Z_PIN"));
+
             ZerodhaAdapter zerodhaAdapter = new ZerodhaAdapter(zerodhaCredentials);
-            KiteTicker ticker = zerodhaAdapter.getTicker(Long.parseLong(matching.instrumentToken));
+//            TradeTicker ticker = zerodhaAdapter.getTicker(Long.parseLong(matching.instrumentToken));
+            zerodhaAdapter.getHistoricalData(matching, Interval.DAY,"2022-02-01 09:30:00","2022-02-15 15:30:00");
 
         } catch (Exception e) {
             e.printStackTrace();

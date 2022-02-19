@@ -1,4 +1,4 @@
-package com.semibit.stocksmate.automate.zerodha.exceptions;
+package com.semibit.stocksmate.automate.zerodha.sdk.kiteconnect.kitehttp.exceptions;
 
 /**
  * Exceptions raised when invalid data is returned from kite trade.

@@ -1,8 +1,6 @@
 package com.semibit.stocksmate.automate.services;
 
-import com.semibit.stocksmate.automate.services.callbacks.RestCallback;
 import okhttp3.*;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.HashMap;

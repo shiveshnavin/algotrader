@@ -1,4 +1,4 @@
-package com.semibit.stocksmate.automate.zerodha.exceptions;
+package com.semibit.stocksmate.automate.zerodha.sdk.kiteconnect.kitehttp.exceptions;
 
 /**
  * Represents a network issue between Kite and the backend Order Management System (OMS).

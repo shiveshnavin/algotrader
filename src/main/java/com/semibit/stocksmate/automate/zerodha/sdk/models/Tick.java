@@ -1,4 +1,4 @@
-package com.semibit.stocksmate.automate.zerodha.models;
+package com.semibit.stocksmate.automate.zerodha.sdk.models;
 
 /**
  * A wrapper for tick.
@@ -41,7 +41,7 @@ public class Tick {
     @SerializedName("totalSellQuantity")
     private double totalSellQuantity;
     @SerializedName("lastTradedTime")
-    private String lastTradedTime;
+    private Date lastTradedTime;
     @SerializedName("oi")
     private double oi;
     @SerializedName("openInterestDayHigh")
@@ -49,21 +49,17 @@ public class Tick {
     @SerializedName("openInterestDayLow")
     private double oiDayLow;
     @SerializedName("tickTimestamp")
-    private String tickTimestamp;
+    private Date tickTimestamp;
 
     @SerializedName("depth")
     private Map<String, ArrayList<Depth>> depth;
 
-    public String getLastTradedTime() {
+    public Date getLastTradedTime() {
         return lastTradedTime;
     }
 
-    public void setLastTradedTime(String lastTradedTime) {
+    public void setLastTradedTime(Date lastTradedTime) {
         this.lastTradedTime = lastTradedTime;
-    }
-
-    public void setLastTradedTime(long lastTradedTime) {
-        this.lastTradedTime = "" + lastTradedTime;
     }
 
     public double getOi() {
@@ -90,16 +86,12 @@ public class Tick {
         this.oiDayLow = dayLowOpenInterest;
     }
 
-    public String getTickTimestamp() {
+    public Date getTickTimestamp() {
         return tickTimestamp;
     }
 
-    public void setTickTimestamp(String tickTimestamp) {
+    public void setTickTimestamp(Date tickTimestamp) {
         this.tickTimestamp = tickTimestamp;
-    }
-
-    public void setTickTimestamp(long tickTimestamp) {
-        this.tickTimestamp = "" + tickTimestamp;
     }
 
     public String getMode() {

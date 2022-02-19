@@ -1,4 +1,4 @@
-package com.semibit.stocksmate.automate.zerodha.ticker;
+package com.semibit.stocksmate.automate.zerodha.sdk.ticker;
 
 /**
  * Created by H1ccup on 10/09/16.
@@ -6,11 +6,11 @@ package com.semibit.stocksmate.automate.zerodha.ticker;
 
 import com.google.gson.*;
 import com.neovisionaries.ws.client.*;
-import com.semibit.stocksmate.automate.TradeTicker;
-import com.semibit.stocksmate.automate.zerodha.exceptions.KiteException;
-import com.semibit.stocksmate.automate.zerodha.models.Depth;
-import com.semibit.stocksmate.automate.zerodha.models.Order;
-import com.semibit.stocksmate.automate.zerodha.models.Tick;
+import com.semibit.stocksmate.automate.zerodha.sdk.kiteconnect.Routes;
+import com.semibit.stocksmate.automate.zerodha.sdk.kiteconnect.kitehttp.exceptions.KiteException;
+import com.semibit.stocksmate.automate.zerodha.sdk.models.Depth;
+import com.semibit.stocksmate.automate.zerodha.sdk.models.Order;
+import com.semibit.stocksmate.automate.zerodha.sdk.models.Tick;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,7 +27,7 @@ import java.util.*;
  * Ticker provider sends tokens to com.zerodhatech.com.zerodhatech.ticker server and get ticks from com.zerodhatech.com.zerodhatech.ticker server. Ticker server sends data in bytes. This Class
  * gets ticks and converts into readable format which includes our own business logic.
  */
-public class KiteTicker implements TradeTicker {
+public class KiteTicker {
 
     private String wsuri ;
     private OnTicks onTickerArrivalListener;
@@ -70,9 +70,14 @@ public class KiteTicker implements TradeTicker {
     /** Used to reconnect after the specified delay.*/
     private boolean canReconnect = true;
 
-    public KiteTicker(String url) {
+    /** Initialize Kite Ticker.
+     * @param accessToken is the token received after successful login process.
+     * @param apiKey is the api key of the app which is received after creating an app on developers console.*/
+    public KiteTicker(String accessToken, String apiKey) {
 
-        wsuri = url;
+        if (wsuri == null) {
+            createUrl(accessToken, apiKey);
+        }
 
         try {
             ws = new WebSocketFactory().createSocket(wsuri);
@@ -173,37 +178,36 @@ public class KiteTicker implements TradeTicker {
         }
     }
 
+    /** Creates url for websocket connection.*/
+    private void createUrl(String accessToken, String apiKey){
+        wsuri = new Routes().getWsuri().replace(":access_token", accessToken).replace(":api_key", apiKey);
+    }
     /** Set listener for listening to ticks.
      * @param onTickerArrivalListener is listener which listens for each tick.*/
-    @Override
     public void setOnTickerArrivalListener(OnTicks onTickerArrivalListener){
         this.onTickerArrivalListener = onTickerArrivalListener;
     }
 
     /** Set listener for on connection established.
      * @param listener is used to listen to onConnected event. */
-    @Override
     public void setOnConnectedListener(OnConnect listener){
         onConnectedListener = listener;
     }
 
     /** Set listener for on connection is disconnected.
      * @param listener is used to listen to onDisconnected event.*/
-    @Override
     public void setOnDisconnectedListener(OnDisconnect listener){
         onDisconnectedListener = listener;
     }
 
     /** Set listener for order updates.
      * @param listener is used to listen to order updates.*/
-    @Override
     public void setOnOrderUpdateListener(OnOrderUpdate listener) {
         orderUpdateListener = listener;
     }
 
     /** Establishes a web socket connection.
      * */
-    @Override
     public void connect() {
         try {
             ws.setPingInterval(pingInterval);
@@ -319,7 +323,6 @@ public class KiteTicker implements TradeTicker {
     }
 
     /** Disconnects websocket connection.*/
-    @Override
     public void disconnect(){
         if(timer != null){
             timer.cancel();
@@ -383,7 +386,6 @@ public class KiteTicker implements TradeTicker {
     /** Subscribes for list of tokens.
      * @param tokens is list of tokens to be subscribed for.
      * */
-    @Override
     public void subscribe(ArrayList<Long> tokens) {
         if(ws != null) {
             if (ws.isOpen()) {
@@ -424,7 +426,6 @@ public class KiteTicker implements TradeTicker {
 
     /** Unsubscribes ticks for list of tokens.
      * @param tokens is the list of tokens that needs to be unsubscribed. */
-    @Override
     public void unsubscribe(ArrayList<Long> tokens){
         if(ws != null) {
             if (ws.isOpen()) {
@@ -491,9 +492,9 @@ public class KiteTicker implements TradeTicker {
             tick.setMode(modeFull);
             long tickTimeStamp = convertToLong(getBytes(bin, 28, 32)) * 1000;
             if(isValidDate(tickTimeStamp)) {
-                tick.setTickTimestamp(tickTimeStamp);
+                tick.setTickTimestamp(new Date(tickTimeStamp));
             } else {
-                tick.setTickTimestamp(0);
+                tick.setTickTimestamp(null);
             }
         }
         return tick;
@@ -543,18 +544,18 @@ public class KiteTicker implements TradeTicker {
     private Tick getFullData(byte[] bin, int dec, Tick tick){
         long lastTradedtime = convertToLong(getBytes(bin, 44, 48)) * 1000;
         if(isValidDate(lastTradedtime)) {
-            tick.setLastTradedTime(lastTradedtime);
+            tick.setLastTradedTime(new Date(lastTradedtime));
         }else {
-            tick.setLastTradedTime(0);
+            tick.setLastTradedTime(null);
         }
         tick.setOi(convertToDouble(getBytes(bin, 48, 52)));
         tick.setOpenInterestDayHigh(convertToDouble(getBytes(bin, 52, 56)));
         tick.setOpenInterestDayLow(convertToDouble(getBytes(bin, 56, 60)));
         long tickTimeStamp = convertToLong(getBytes(bin, 60, 64)) * 1000;
         if(isValidDate(tickTimeStamp)) {
-            tick.setTickTimestamp(tickTimeStamp);
+            tick.setTickTimestamp(new Date(tickTimeStamp));
         } else {
-            tick.setTickTimestamp(0);
+            tick.setTickTimestamp(null);
         }
         tick.setMarketDepth(getDepthData(bin, dec, 64, 184));
         return  tick;
@@ -718,7 +719,6 @@ public class KiteTicker implements TradeTicker {
         }
     }
 
-    @Override
     public Order getOrder(JSONObject data) {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
