@@ -63,4 +63,10 @@ public class Order {
     public String tag;
     @SerializedName("guid")
     public String guid;
+
+    public Double getDoublePrice(){
+        return Double.parseDouble(price);
+    }
+
+
 }

@@ -6,11 +6,11 @@ package com.semibit.stocksmate.automate.zerodha.sdk.ticker;
 
 import com.google.gson.*;
 import com.neovisionaries.ws.client.*;
+import com.semibit.stocksmate.automate.zerodha.models.Depth;
 import com.semibit.stocksmate.automate.zerodha.sdk.kiteconnect.Routes;
 import com.semibit.stocksmate.automate.zerodha.sdk.kiteconnect.kitehttp.exceptions.KiteException;
-import com.semibit.stocksmate.automate.zerodha.sdk.models.Depth;
 import com.semibit.stocksmate.automate.zerodha.sdk.models.Order;
-import com.semibit.stocksmate.automate.zerodha.sdk.models.Tick;
+import com.semibit.stocksmate.automate.zerodha.models.Tick;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -492,7 +492,7 @@ public class KiteTicker {
             tick.setMode(modeFull);
             long tickTimeStamp = convertToLong(getBytes(bin, 28, 32)) * 1000;
             if(isValidDate(tickTimeStamp)) {
-                tick.setTickTimestamp(new Date(tickTimeStamp));
+                tick.setTickTimestamp(tickTimeStamp);
             } else {
                 tick.setTickTimestamp(null);
             }
@@ -544,7 +544,7 @@ public class KiteTicker {
     private Tick getFullData(byte[] bin, int dec, Tick tick){
         long lastTradedtime = convertToLong(getBytes(bin, 44, 48)) * 1000;
         if(isValidDate(lastTradedtime)) {
-            tick.setLastTradedTime(new Date(lastTradedtime));
+            tick.setLastTradedTime(lastTradedtime);
         }else {
             tick.setLastTradedTime(null);
         }
@@ -553,7 +553,7 @@ public class KiteTicker {
         tick.setOpenInterestDayLow(convertToDouble(getBytes(bin, 56, 60)));
         long tickTimeStamp = convertToLong(getBytes(bin, 60, 64)) * 1000;
         if(isValidDate(tickTimeStamp)) {
-            tick.setTickTimestamp(new Date(tickTimeStamp));
+            tick.setTickTimestamp(tickTimeStamp);
         } else {
             tick.setTickTimestamp(null);
         }

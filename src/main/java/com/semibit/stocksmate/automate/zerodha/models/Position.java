@@ -1,4 +1,4 @@
-package com.semibit.stocksmate.automate.zerodha.sdk.models;
+package com.semibit.stocksmate.automate.zerodha.models;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -12,37 +12,37 @@ public class Position {
     @SerializedName("exchange")
     public String exchange;
     @SerializedName("sell_value")
-    public Double sellValue;
+    public Double sellValue = 0d;
     @SerializedName("last_price")
-    public Double lastPrice;
+    public Double lastPrice = 0d;
     @SerializedName("unrealised")
     public Double unrealised;
     @SerializedName("buy_price")
-    public Double buyPrice;
+    public Double buyPrice = 0d;
     @SerializedName("sell_price")
-    public Double sellPrice;
+    public Double sellPrice = 0d;
     @SerializedName("m2m")
     public Double m2m;
     @SerializedName("tradingsymbol")
     public String tradingSymbol;
     @SerializedName("quantity")
-    public int netQuantity;
+    public int netQuantity = 0;
     @SerializedName("sell_quantity")
-    public int sellQuantity;
+    public int sellQuantity = 0;
     @SerializedName("realised")
     public Double realised;
     @SerializedName("buy_quantity")
-    public int buyQuantity;
+    public int buyQuantity = 0;
     @SerializedName("net_value")
-    public Double netValue;
+    public Double netValue = 0d;
     @SerializedName("buy_value")
-    public Double buyValue;
+    public Double buyValue = 0d;
     @SerializedName("multiplier")
     public Double multiplier;
     @SerializedName("instrument_token")
     public String instrumentToken;
     @SerializedName("close_price")
-    public Double closePrice;
+    public Double closePrice = 0d;
     @SerializedName("pnl")
     public Double pnl;
     @SerializedName("overnight_quantity")
@@ -62,10 +62,15 @@ public class Position {
     @SerializedName("day_buy_value")
     public double dayBuyValue;
     @SerializedName("day_sell_value")
-    public double daySellValue;
+    public double daySellValue = 0d;
     @SerializedName("value")
     public double value;
     @SerializedName("average_price")
     public double averagePrice;
+
+
+    public Double calculatePnl(){
+        return sellValue - buyValue ;
+    }
 }
 

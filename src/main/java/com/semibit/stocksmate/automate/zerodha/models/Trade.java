@@ -1,4 +1,4 @@
-package com.semibit.stocksmate.automate.zerodha.sdk.models;
+package com.semibit.stocksmate.automate.zerodha.models;
 
 import com.google.gson.annotations.SerializedName;
 

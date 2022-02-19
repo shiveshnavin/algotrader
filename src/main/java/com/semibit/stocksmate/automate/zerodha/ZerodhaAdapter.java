@@ -7,22 +7,17 @@ import com.semibit.stocksmate.automate.TradeTicker;
 import com.semibit.stocksmate.automate.common.models.Interval;
 import com.semibit.stocksmate.automate.services.RestClient;
 import com.semibit.stocksmate.automate.zerodha.mappers.HistoricalCandleToTickMapper;
-import com.semibit.stocksmate.automate.zerodha.models.Order;
-import com.semibit.stocksmate.automate.zerodha.models.ScipRes;
-import com.semibit.stocksmate.automate.zerodha.models.Tick;
-import com.semibit.stocksmate.automate.zerodha.models.ZerodhaCredentials;
-import com.semibit.stocksmate.automate.zerodha.ticker.KiteTicker;
-import com.semibit.stocksmate.automate.zerodha.ticker.OnOrderUpdate;
+import com.semibit.stocksmate.automate.zerodha.models.*;
 import com.semibit.stocksmate.automate.zerodha.sdk.kiteconnect.KiteConnect;
 import com.semibit.stocksmate.automate.zerodha.sdk.kiteconnect.kitehttp.exceptions.KiteException;
 import com.semibit.stocksmate.automate.zerodha.sdk.models.HistoricalData;
+import com.semibit.stocksmate.automate.zerodha.ticker.KiteTicker;
+import com.semibit.stocksmate.automate.zerodha.ticker.OnOrderUpdate;
 import org.mapstruct.factory.Mappers;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -53,12 +48,12 @@ public class ZerodhaAdapter extends TradeAdapter {
     }
 
     @Override
-    public Order waitForOrderOpen(Order order) {
+    public Order waitForOrderOpen(String orderId) {
         return null;
     }
 
     @Override
-    public Order getOrderStatus() {
+    public Order getOrderStatus(String orderId) {
         return null;
     }
 
@@ -120,6 +115,21 @@ public class ZerodhaAdapter extends TradeAdapter {
             e.printStackTrace();
         }
         return ticks;
+    }
+
+    @Override
+    public List<Trade> getTrades() {
+        return null;
+    }
+
+    @Override
+    public List<Order> getOrders() {
+        return null;
+    }
+
+    @Override
+    public Position getPosition(ScipRes scipRes) {
+        return null;
     }
 
 

@@ -1,6 +1,6 @@
 package com.semibit.stocksmate.automate.zerodha.sdk.ticker;
 
-import com.semibit.stocksmate.automate.zerodha.sdk.models.Tick;
+import com.semibit.stocksmate.automate.zerodha.models.Tick;
 
 import java.util.ArrayList;
 

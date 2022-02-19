@@ -2,6 +2,8 @@ package com.semibit.stocksmate.automate.zerodha.sdk.kiteconnect;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
+import com.semibit.stocksmate.automate.zerodha.models.Position;
+import com.semibit.stocksmate.automate.zerodha.models.Trade;
 import com.semibit.stocksmate.automate.zerodha.models.ZerodhaCredentials;
 import com.semibit.stocksmate.automate.zerodha.sdk.models.*;
 import com.semibit.stocksmate.automate.zerodha.sdk.kiteconnect.kitehttp.KiteRequestHandler;
