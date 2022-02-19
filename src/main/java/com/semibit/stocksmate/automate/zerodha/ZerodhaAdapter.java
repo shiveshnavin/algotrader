@@ -108,7 +108,6 @@ public class ZerodhaAdapter extends TradeAdapter {
         try {
             HistoricalData data = kiteConnect.getHistoricalData(dateFormat.parse(from), dateFormat.parse(to), scip.getInstrumentToken(), interval.getValue(), false, true);
             HistoricalCandleToTickMapper mapper = Mappers.getMapper(HistoricalCandleToTickMapper.class);
-            Logger.info(data);
             List<Tick> mapped = data.dataArrayList.stream().map(historicalData -> mapper.mapToTick(scip, historicalData)).collect(Collectors.toList());
             ticks.addAll(mapped);
         } catch (Exception | KiteException e) {

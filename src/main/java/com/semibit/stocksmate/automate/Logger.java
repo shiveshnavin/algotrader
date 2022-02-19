@@ -7,9 +7,13 @@ public class Logger {
     static Gson gson = new Gson();
 
     public static void info(Object logs) {
+        String op;
         if (logs instanceof String)
-            System.out.println(logs);
+            op = logs.toString();
         else
-            System.out.println(gson.toJson(logs));
+            op = gson.toJson(logs);
+        if (op.contains("PnL")) {
+            System.out.println(op);
+        }
     }
 }
