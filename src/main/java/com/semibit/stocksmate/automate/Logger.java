@@ -12,7 +12,7 @@ public class Logger {
             op = logs.toString();
         else
             op = gson.toJson(logs);
-        if (op.contains("PnL")) {
+        if (op.contains("PnL") || true) {
             System.out.println(op);
         }
     }

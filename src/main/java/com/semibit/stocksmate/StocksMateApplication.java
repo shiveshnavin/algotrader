@@ -1,6 +1,7 @@
 package com.semibit.stocksmate;
 
 import com.semibit.stocksmate.automate.Logger;
+import com.semibit.stocksmate.automate.TradeTicker;
 import com.semibit.stocksmate.automate.backtest.BackTestTradeAdapter;
 import com.semibit.stocksmate.automate.common.models.Interval;
 import com.semibit.stocksmate.automate.common.models.Transaction;
@@ -8,12 +9,10 @@ import com.semibit.stocksmate.automate.zerodha.ScipFinder;
 import com.semibit.stocksmate.automate.zerodha.ZerodhaAdapter;
 import com.semibit.stocksmate.automate.zerodha.models.*;
 import com.semibit.stocksmate.automate.stratergies.FollowMovementTradeStrategy;
+import com.semibit.stocksmate.automate.zerodha.ticker.OnTicks;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class StocksMateApplication {
 
@@ -22,8 +21,8 @@ public class StocksMateApplication {
             ScipRes filter = new ScipRes();
             filter.name = "NIFTY";
             filter.expiry = "2022-02-24";
-            filter.strike = "17300";
-            filter.instrumentType = "CE";
+            filter.strike = "17100";
+            filter.instrumentType = "PE";
             filter.segment = "NFO-OPT";
             filter.exchange = "NFO";
 
@@ -35,8 +34,12 @@ public class StocksMateApplication {
             zerodhaCredentials.setPin(System.getenv("Z_PIN"));
 
             ZerodhaAdapter zerodhaAdapter = new ZerodhaAdapter(zerodhaCredentials);
-//            TradeTicker ticker = zerodhaAdapter.getTicker(Long.parseLong(matching.instrumentToken));
+            TradeTicker ticker = zerodhaAdapter.getTicker(Long.parseLong(scip.instrumentToken));
 
+            if(true){
+                test(ticker,scip);
+                return;
+            }
 
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date start = format.parse("2022-02-02 09:50:00");
@@ -63,6 +66,20 @@ public class StocksMateApplication {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static Double test(TradeTicker ticker,ScipRes scip){
+        BackTestTradeAdapter backTestTradeAdapter = new BackTestTradeAdapter();
+        FollowMovementTradeStrategy followMovementTradeStrategy = new FollowMovementTradeStrategy(backTestTradeAdapter, scip);
+
+        ticker.setOnTickerArrivalListener(new OnTicks() {
+            @Override
+            public void onTicks(ArrayList<Tick> ticks) {
+                followMovementTradeStrategy.evaluate(Collections.singletonList(ticks.get(0)));
+            }
+        });
+
+        return  0D;
     }
 
     public static Double checkForDay(ZerodhaAdapter zerodhaAdapter, ScipRes scip, String from, String to) {
