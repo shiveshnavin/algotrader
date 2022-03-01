@@ -1,0 +1,52 @@
+[
+  [
+    {
+      "tradable": true,
+      "mode": "full",
+      "instrument_token": 256503558,
+      "last_price": 0,
+      "last_traded_quantity": 0,
+      "average_traded_price": 0,
+      "volume_traded": 0,
+      "total_buy_quantity": 0,
+      "total_sell_quantity": 0,
+      "ohlc": {
+        "open": 0,
+        "high": 0,
+        "low": 0,
+        "close": 88.6425
+      },
+      "change": -100,
+      "last_trade_time": "2022-02-27T18:30:00.000Z",
+      "exchange_timestamp": null,
+      "oi": 0,
+      "oi_day_high": 0,
+      "oi_day_low": 0,
+      "timeStamp": 1646150162463
+    },
+    {
+      "tradable": true,
+      "mode": "full",
+      "instrument_token": 275855110,
+      "last_price": 0,
+      "last_traded_quantity": 0,
+      "average_traded_price": 0,
+      "volume_traded": 0,
+      "total_buy_quantity": 0,
+      "total_sell_quantity": 0,
+      "ohlc": {
+        "open": 0,
+        "high": 0,
+        "low": 0,
+        "close": 85.2575
+      },
+      "change": -100.00000000000001,
+      "last_trade_time": "2022-02-27T18:30:00.000Z",
+      "exchange_timestamp": null,
+      "oi": 0,
+      "oi_day_high": 0,
+      "oi_day_low": 0,
+      "timeStamp": 1646150162463
+    }
+  ]
+]

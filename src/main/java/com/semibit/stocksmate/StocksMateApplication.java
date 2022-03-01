@@ -1,5 +1,6 @@
 package com.semibit.stocksmate;
 
+import com.google.gson.Gson;
 import com.semibit.stocksmate.automate.Logger;
 import com.semibit.stocksmate.automate.TradeTicker;
 import com.semibit.stocksmate.automate.backtest.BackTestTradeAdapter;
@@ -7,10 +8,18 @@ import com.semibit.stocksmate.automate.common.models.Interval;
 import com.semibit.stocksmate.automate.common.models.Transaction;
 import com.semibit.stocksmate.automate.zerodha.ScipFinder;
 import com.semibit.stocksmate.automate.zerodha.ZerodhaAdapter;
+import com.semibit.stocksmate.automate.zerodha.mappers.ArchiveTickToZerodhaTickMapper;
+import com.semibit.stocksmate.automate.zerodha.mappers.HistoricalCandleToTickMapper;
 import com.semibit.stocksmate.automate.zerodha.models.*;
 import com.semibit.stocksmate.automate.stratergies.FollowMovementTradeStrategy;
+import com.semibit.stocksmate.automate.zerodha.models.archive.ArchiveTick;
 import com.semibit.stocksmate.automate.zerodha.ticker.OnTicks;
+import org.json.JSONArray;
+import org.mapstruct.factory.Mappers;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -67,6 +76,31 @@ public class StocksMateApplication {
             e.printStackTrace();
         }
     }
+
+    public static List<List<Tick>> loadFromArchive(String filePath){
+        List<List<Tick>> ticks = new ArrayList<>();
+        ArchiveTickToZerodhaTickMapper mapper = Mappers.getMapper(ArchiveTickToZerodhaTickMapper.class);
+        try {
+            String jsonString = Files.readString(Path.of(filePath));
+            Gson gson = new Gson();
+            JSONArray jsonArray = new JSONArray(jsonString);
+            List<Tick> thisTick = new ArrayList<>();
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONArray tickArr = jsonArray.getJSONArray(i);
+                for (int j = 0; j < tickArr.length(); j++) {
+                    ArchiveTick thisSymbol = gson.fromJson(tickArr.get(j).toString(), ArchiveTick.class);
+                    Tick thisSymbolTick = mapper.mapToTick(thisSymbol);
+                    thisTick.add(thisSymbolTick);
+                }
+                ticks.add(thisTick);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ticks;
+    }
+
 
     public static Double test(TradeTicker ticker,ScipRes scip){
         BackTestTradeAdapter backTestTradeAdapter = new BackTestTradeAdapter();
