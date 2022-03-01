@@ -19,6 +19,7 @@ public abstract class ArchiveTickToZerodhaTickMapper {
             @Mapping(target = "lastTradedQuantity", source = "data.lastTradedQuantity"),
             @Mapping(target = "oi", source = "data.oi"),
             @Mapping(target="lastTradedTime",source = "data.lastTradeTime"),
+            @Mapping(target="volumeTradedToday",source = "data.volumeTraded"),
             @Mapping(target="tickTimestamp",source = "data.timeStamp"),
             @Mapping(target="averageTradePrice",source = "data.averageTradedPrice")
     })
